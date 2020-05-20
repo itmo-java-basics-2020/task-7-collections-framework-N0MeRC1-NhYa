@@ -1,7 +1,6 @@
 package ru.ifmo.collections;
 
-import java.util.AbstractSet;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Represents sorted set of unique values.
@@ -16,21 +15,71 @@ import java.util.Comparator;
  *
  * @param <T> set contents type
  */
-public abstract class SortedSet<T> extends AbstractSet<T> {
-    // private final Map<???, ???> contents; TODO decide Map implementation and key/value types. "???" is used just as an example
+public class SortedSet<T> extends AbstractSet<T> {
+     private  Map<T, T> contents;
+
+     public SortedSet(){
+         contents = new TreeMap<T, T>();
+    }
+
+    public SortedSet(Comparator<T> comparator){
+         contents = new TreeMap<T,T>(comparator);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return contents.keySet().iterator();
+    }
+
+    @Override
+    public int size() {
+        return contents.size();
+    }
+    @Override
+    public boolean add(T t) {
+        int temp = contents.size();
+        contents.put(t, t);
+        return temp != contents.size();
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> collection) {
+        int temp = contents.size();
+        for (T i : collection) {
+            this.add(i);
+        }
+        return temp != contents.size();
+    }
+
+    @Override
+    public boolean remove(Object obj) {
+        return contents.remove(obj, obj);
+    }
+    @Override
+    public boolean removeAll(Collection<?> col){
+         int tmp = size();
+         for (Object obj : col){
+             this.remove(obj);
+         }
+         return tmp != size();
+    }
+
     public static <T> SortedSet<T> create() {
-        throw new UnsupportedOperationException(); // TODO implement
+        return new SortedSet();
+
     }
 
     public static <T> SortedSet<T> from(Comparator<T> comparator) {
-        throw new UnsupportedOperationException(); // TODO implement
+        return new SortedSet(comparator);
     }
 
-    public T[] getSorted() {
-        throw new UnsupportedOperationException(); // TODO implement
+    public List getSorted() {
+       return new ArrayList(contents.values());
     }
 
-    public T[] getReversed() {
-        throw new UnsupportedOperationException(); // TODO implement
+    public List getReversed() {
+        List<T> rev = new ArrayList(contents.values());
+        Collections.reverse(rev);
+        return rev;
     }
 }

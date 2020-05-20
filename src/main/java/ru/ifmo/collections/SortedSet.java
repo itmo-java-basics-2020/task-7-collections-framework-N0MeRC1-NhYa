@@ -78,7 +78,7 @@ public class SortedSet<T> extends AbstractSet<T> {
     }
 
     public List getReversed() {
-        List<T> rev = new ArrayList(contents.values());
+        List<T> rev = new ArrayList(contents.values()) ;
         Collections.reverse(rev);
         return rev;
     }
